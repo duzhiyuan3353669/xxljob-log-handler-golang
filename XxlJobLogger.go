@@ -72,7 +72,7 @@ func (s *Xxljob_logger_handler) createLogFile() *os.File {
 }
 func (s *Xxljob_logger_handler) makeLogFileName(log_id int64, log_date_time int64) string {
 
-	date_str := time.UnixMicro(log_date_time).Format("2006-01-02")
+	date_str := time.UnixMilli(log_date_time).Format("2006-01-02")
 
 	return LOG_DIR + date_str + "/" + strconv.Itoa(int(log_id)) + ".log"
 }
