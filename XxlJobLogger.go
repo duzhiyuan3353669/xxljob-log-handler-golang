@@ -104,7 +104,9 @@ func (s *Xxljob_logger_handler) ReadLog(req *xxl.LogReq) *xxl.LogRes {
 			break
 		}
 		if currentLine >= from_line {
+			var eof byte = '\n'
 			log_context = append(log_context, line...)
+			log_context = append(log_context, eof)
 		}
 	}
 
