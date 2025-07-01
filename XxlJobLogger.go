@@ -114,7 +114,7 @@ func (s *Xxljob_logger_handler) ReadLog(req *xxl.LogReq) *xxl.LogRes {
 		FromLineNum: req.FromLineNum,
 		ToLineNum:   2,
 		LogContent:  string(log_context),
-		IsEnd:       true,
+		IsEnd:       false,
 	}}
 
 }
