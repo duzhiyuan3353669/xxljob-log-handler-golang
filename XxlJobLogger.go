@@ -1,0 +1,1 @@
+package xxljob_log_handler_golang
