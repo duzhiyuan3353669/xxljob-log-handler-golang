@@ -8,7 +8,6 @@ import (
 	"io"
 	"os"
 	"strconv"
-	"sync"
 	"time"
 )
 
@@ -47,18 +46,15 @@ func (s *Xxljob_logger_handler) Error(format string, a ...interface{}) {
 	s.log.Errorf(format, a...)
 }
 
-var once_set sync.Once
-
 func (s *Xxljob_logger_handler) SetLogId(log_id int) *Xxljob_logger_handler {
-	once_set.Do(func() {
-		s.logId = int64(log_id)
-		if log_id != 0 {
-			s.log.SetOutput(io.MultiWriter(s.createLogFile(), os.Stdout))
-		} else {
-			s.log.SetOutput(os.Stdout)
-		}
-	})
-	return s
+	ss := GetLogHandler()
+	ss.logId = int64(log_id)
+	if log_id != 0 {
+		ss.log.SetOutput(io.MultiWriter(s.createLogFile(), os.Stdout))
+	} else {
+		ss.log.SetOutput(os.Stdout)
+	}
+	return ss
 }
 func (s *Xxljob_logger_handler) createLogFile() *os.File {
 
