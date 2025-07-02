@@ -64,7 +64,7 @@ func (s *Xxljob_logger_handler) createLogFile() *os.File {
 		filename = strconv.Itoa(int(s.logId)) + ".log"
 	}
 	filepath := s.getLogDir() + "/" + filename
-	file, err := os.OpenFile(filepath, os.O_CREATE|os.O_WRONLY|os.O_APPEND, 0755)
+	file, err := os.OpenFile(filepath, os.O_CREATE|os.O_APPEND, 0755)
 	if err != nil {
 		panic(err)
 	}
