@@ -78,7 +78,7 @@ func (s *Xxljob_logger_handler) makeLogFileName(log_id int64, log_date_time int6
 }
 
 func (s *Xxljob_logger_handler) ReadLog(req *xxl.LogReq) *xxl.LogRes {
-	log_id := s.logId
+	log_id := req.LogID
 	log_dateTime := req.LogDateTim
 	from_line := req.FromLineNum
 	filepath := s.makeLogFileName(log_id, log_dateTime)
