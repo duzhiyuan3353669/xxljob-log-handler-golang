@@ -8,6 +8,7 @@ import (
 	"io"
 	"os"
 	"strconv"
+	"sync"
 	"time"
 )
 
@@ -46,13 +47,17 @@ func (s *Xxljob_logger_handler) Error(format string, a ...interface{}) {
 	s.log.Errorf(format, a...)
 }
 
+var once_set sync.Once
+
 func (s *Xxljob_logger_handler) SetLogId(log_id int) *Xxljob_logger_handler {
-	s.logId = int64(log_id)
-	if log_id != 0 {
-		s.log.SetOutput(io.MultiWriter(s.createLogFile(), os.Stdout))
-	} else {
-		s.log.SetOutput(os.Stdout)
-	}
+	once_set.Do(func() {
+		s.logId = int64(log_id)
+		if log_id != 0 {
+			s.log.SetOutput(io.MultiWriter(s.createLogFile(), os.Stdout))
+		} else {
+			s.log.SetOutput(os.Stdout)
+		}
+	})
 	return s
 }
 func (s *Xxljob_logger_handler) createLogFile() *os.File {
@@ -64,7 +69,7 @@ func (s *Xxljob_logger_handler) createLogFile() *os.File {
 		filename = strconv.Itoa(int(s.logId)) + ".log"
 	}
 	filepath := s.getLogDir() + "/" + filename
-	file, err := os.OpenFile(filepath, os.O_CREATE|os.O_APPEND, 0755)
+	file, err := os.OpenFile(filepath, os.O_CREATE|os.O_WRONLY|os.O_APPEND, 0755)
 	if err != nil {
 		panic(err)
 	}
