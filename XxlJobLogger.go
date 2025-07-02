@@ -47,14 +47,13 @@ func (s *Xxljob_logger_handler) Error(format string, a ...interface{}) {
 }
 
 func (s *Xxljob_logger_handler) SetLogId(log_id int) *Xxljob_logger_handler {
-	ss := GetLogHandler()
-	ss.logId = int64(log_id)
+	s.logId = int64(log_id)
 	if log_id != 0 {
-		ss.log.SetOutput(io.MultiWriter(s.createLogFile(), os.Stdout))
+		s.log.SetOutput(io.MultiWriter(s.createLogFile(), os.Stdout))
 	} else {
-		ss.log.SetOutput(os.Stdout)
+		s.log.SetOutput(os.Stdout)
 	}
-	return ss
+	return s
 }
 func (s *Xxljob_logger_handler) createLogFile() *os.File {
 
@@ -65,7 +64,7 @@ func (s *Xxljob_logger_handler) createLogFile() *os.File {
 		filename = strconv.Itoa(int(s.logId)) + ".log"
 	}
 	filepath := s.getLogDir() + "/" + filename
-	file, err := os.OpenFile(filepath, os.O_CREATE|os.O_WRONLY|os.O_APPEND, 0755)
+	file, err := os.OpenFile(filepath, os.O_CREATE|os.O_APPEND, 0755)
 	if err != nil {
 		panic(err)
 	}
